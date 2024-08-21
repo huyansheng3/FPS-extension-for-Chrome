@@ -1,8 +1,13 @@
-.fps_draw{
+
+.fps_container {
     position: fixed;
     z-index: 9999;
     top: 0px;
     right: 0px;
+    display: none;
+}
+
+.fps_draw{
     background: linear-gradient(rgba(0,255,132,1) 0%, rgba(0,128,128,1) 100%);
     /*border-radius: 5px;*/
     border-bottom-left-radius: 5px;
@@ -10,8 +15,18 @@
     border-bottom: 2px solid white;
     box-shadow: -5px 4px 16px 0px rgba(50, 50, 50, 0.77);
     overflow: hidden;
-    display: none;
 }
-.fps_draw.is_visible{
+
+.fps_container_result {
+    display: none;
+    background-color: #fff;
+}
+
+.fps_container_result.is_visible {
+    display: block;
+}
+
+
+.fps_container.is_visible{
     display: block;
 }

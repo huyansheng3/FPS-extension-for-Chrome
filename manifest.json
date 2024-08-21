@@ -1,24 +1,20 @@
 {
-  "manifest_version": 2,
-  "name": "CreativeRusBear's FPS extension",
+  "manifest_version": 3,
+  "name": "FPS extension",
   "description": "FPS extension for Chrome",
   "version": "1.0",
-  "browser_action":{
-    "default_icon": "speedometer.png"
+  "action": {
+    "default_icon": "fps.png"
   },
-  "permissions":[
-    "activeTab"
-  ],
-  "content_scripts":[
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["activeTab"],
+  "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
+      "matches": ["*://*/*"],
       "js": ["fps.js"],
       "css": ["style.css"]
     }
-  ],
-  "background":{
-    "scripts": ["background.js"]
-  }
+  ]
 }
