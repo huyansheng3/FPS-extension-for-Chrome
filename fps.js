@@ -8,19 +8,19 @@ class FPS {
 
     this.result = document.createElement('div');
     this.result.classList.add('fps_container_result');
-    
+
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
     this.canvas.classList.add('fps_draw');
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    this.container.appendChild(this.canvas)
-    this.container.appendChild(this.result) 
+    this.container.appendChild(this.canvas);
+    this.container.appendChild(this.result);
     document.body.appendChild(this.container);
 
     this.ctx.font = 'bold 16px Arial';
     var that = this;
-    
+
     this.canvas.addEventListener('click', function () {
       that.staypause();
     });
@@ -36,22 +36,36 @@ class FPS {
 
     this.durationBegin = 0;
   }
-  
+
   staypause() {
     this.playing = this.playing ? false : true;
     if (this.playing) {
-        this.result.classList.remove('is_visible');
-        this.loop();
-        this.durationBegin = this.perf.now();
+      this.result.classList.remove('is_visible');
+      this.loop();
+      this.durationBegin = this.perf.now();
     } else {
-        const duration = ((this.perf.now() - this.durationBegin)/1000).toFixed(2);
-        const avgFPS= this.getAverageFPS();
-        const lowFPS = this.getOnePercentLowFPS()
-        this.result.innerHTML = `<div>持续时间：${duration}s </div><div>平均帧：${avgFPS} </div> <div>1% low帧：${lowFPS} </div>`
-        this.result.classList.add('is_visible');
+      const duration = ((this.perf.now() - this.durationBegin) / 1000).toFixed(
+        2,
+      );
+      const avgFPS = this.getAverageFPS();
+      const lowFPS = this.getOnePercentLowFPS();
+      this.result.innerHTML = `
+            <div class="fps-stat">
+                <span class="fps-label">持续时间</span>
+                <span class="fps-value">${duration}s</span>
+            </div>
+            <div class="fps-stat">
+                <span class="fps-label">平均帧率</span>
+                <span class="fps-value">${avgFPS}</span>
+            </div>
+            <div class="fps-stat">
+                <span class="fps-label">1% Low</span>
+                <span class="fps-value">${lowFPS}</span>
+            </div>`;
+      this.result.classList.add('is_visible');
     }
   }
-  
+
   toggle() {
     this.hidden = this.hidden ? false : true;
     if (!this.hidden) {
@@ -62,17 +76,15 @@ class FPS {
     }
   }
 
-  
   getAverageFPS() {
     if (this.allFPS.length === 0) return 0;
     var totalFPS = 0;
     for (var i = 0; i < this.allFPS.length; i++) {
       totalFPS += this.allFPS[i];
     }
-    return  parseInt(totalFPS / this.allFPS.length);
+    return parseInt(totalFPS / this.allFPS.length);
   }
 
-  
   getOnePercentLowFPS() {
     if (this.allFPS.length === 0) return 0;
     this.allFPS.sort((a, b) => a - b);
@@ -91,28 +103,27 @@ class FPS {
 
   add(x) {
     this.allFPS.unshift(x);
-    
+
     this.allFPS = this.allFPS.slice(0, this.width);
   }
 
   draw() {
     var currentFPS = this.getFPS();
     this.add(currentFPS);
-    
+
     this.ctx.clearRect(0, 0, this.width, this.height);
-    
+
     this.ctx.fillStyle = '#000000';
-    
+
     for (var i = 0; i <= this.width; i++) {
       this.ctx.fillRect(i, 0, 1, 5 + 60 - this.allFPS[i]);
     }
-    this.ctx.fillText(currentFPS + ' fps', 22, 52); 
+    this.ctx.fillText(currentFPS + ' fps', 22, 52);
     this.ctx.fillStyle = '#ffffff';
     for (var i = 0; i <= this.width; i++) {
-      
       this.ctx.fillRect(i, 5 + 60 - this.allFPS[i], 1, 2);
     }
-    
+
     this.ctx.fillText(currentFPS + ' fps', 20, 50);
   }
   getFPS() {
