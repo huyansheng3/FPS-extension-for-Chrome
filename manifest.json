@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "FPS extension",
   "description": "FPS extension for Chrome",
-  "version": "1.1",
+  "version": "1.2",
   "action": {
     "default_icon": "fps.png"
   },

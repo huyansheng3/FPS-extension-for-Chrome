@@ -14,8 +14,16 @@ class FPS {
     this.canvas.classList.add('fps_draw');
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    this.container.appendChild(this.canvas);
-    this.container.appendChild(this.result);
+
+    this.shadow = this.container.attachShadow({ mode: 'open' });
+
+    const style = document.createElement('style');
+    style.textContent = this.getStyles();
+
+    this.shadow.appendChild(style);
+    this.shadow.appendChild(this.canvas);
+    this.shadow.appendChild(this.result);
+
     document.body.appendChild(this.container);
 
     this.ctx.font = 'bold 16px Arial';
@@ -50,18 +58,27 @@ class FPS {
       const avgFPS = this.getAverageFPS();
       const lowFPS = this.getOnePercentLowFPS();
       this.result.innerHTML = `
-            <div class="fps-stat">
-                <span class="fps-label">持续时间</span>
-                <span class="fps-value">${duration}s</span>
-            </div>
-            <div class="fps-stat">
-                <span class="fps-label">平均帧率</span>
-                <span class="fps-value">${avgFPS}</span>
-            </div>
-            <div class="fps-stat">
-                <span class="fps-label">1% Low</span>
-                <span class="fps-value">${lowFPS}</span>
-            </div>`;
+    <div class="fps-stat">
+      <div class="fps-label-group">
+        <span class="fps-label-en">Duration</span>
+        <span class="fps-label-zh">持续时间</span>
+      </div>
+      <span class="fps-value">${duration}s</span>
+    </div>
+    <div class="fps-stat">
+      <div class="fps-label-group">
+        <span class="fps-label-en">Average FPS</span>
+        <span class="fps-label-zh">平均帧率</span>
+      </div>
+      <span class="fps-value">${avgFPS}</span>
+    </div>
+    <div class="fps-stat">
+      <div class="fps-label-group">
+        <span class="fps-label-en">1% Low FPS</span>
+        <span class="fps-label-zh">最低帧率</span>
+      </div>
+      <span class="fps-value">${lowFPS}</span>
+    </div>`;
       this.result.classList.add('is_visible');
     }
   }
@@ -136,6 +153,84 @@ class FPS {
       this.frame = 0;
     }
     return result;
+  }
+
+  getStyles() {
+    return `
+      .fps_draw {
+        background: linear-gradient(rgba(0, 255, 132, 0.9) 0%, rgba(0, 128, 128, 0.9) 100%);
+        border-bottom-left-radius: 8px;
+        border-left: 2px solid rgba(255, 255, 255, 0.8);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+        box-shadow: -5px 4px 16px 0px rgba(50, 50, 50, 0.3);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        width: 150px;
+      }
+      
+      .fps_draw:hover {
+        transform: scale(1.02);
+      }
+      
+      .fps_container_result {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.85);
+        color: white;
+        border-bottom-left-radius: 8px;
+        padding: 8px 0;
+        width: 150px;
+        opacity: 0;
+        transform: translateY(-5px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      
+      .fps-stat {
+        padding: 8px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .fps-stat:last-child {
+        border-bottom: none;
+      }
+
+      .fps-label-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 80px;
+      }
+      
+      .fps-label-en {
+        font-size: 12px;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+      }
+
+      .fps-label-zh {
+        font-size: 12px;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: rgba(255, 255, 255, 0.6);
+        white-space: nowrap;
+      }
+      
+      .fps-value {
+        font-weight: bold;
+        font-size: 15px;
+        font-family: monospace;
+        color: #00ff84;
+        white-space: nowrap;
+      }
+      
+      .fps_container_result.is_visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
   }
 }
 

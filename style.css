@@ -1,52 +1,15 @@
 .fps_container {
     position: fixed;
-    z-index: 9999;
+    z-index: 2147483647;
     top: 0px;
     right: 0px;
     display: none;
-}
-
-.fps_draw {
-    background: linear-gradient(rgba(0, 255, 132, 1) 0%, rgba(0, 128, 128, 1) 100%);
-    /*border-radius: 5px;*/
-    border-bottom-left-radius: 5px;
-    border-left: 2px solid white;
-    border-bottom: 2px solid white;
-    box-shadow: -5px 4px 16px 0px rgba(50, 50, 50, 0.77);
-    overflow: hidden;
-}
-
-.fps_container_result {
-    display: none;
-    background-color: #fff;
-}
-
-.fps-stat {
-    padding: 8px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.fps-stat:last-child {
-    border-bottom: none;
-}
-
-.fps-label {
     font-size: 14px;
+    line-height: 1.4;
+    pointer-events: none;
 }
-
-.fps-value {
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.fps_container_result.is_visible {
-    display: block;
-}
-
 
 .fps_container.is_visible {
     display: block;
+    pointer-events: auto;
 }
